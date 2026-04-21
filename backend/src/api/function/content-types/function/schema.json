@@ -1,0 +1,25 @@
+{
+  "kind": "singleType",
+  "collectionName": "functions",
+  "info": {
+    "singularName": "function",
+    "pluralName": "functions",
+    "displayName": "Function"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "functions": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.function-item"
+    }
+  }
+}

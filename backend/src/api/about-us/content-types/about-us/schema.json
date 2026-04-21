@@ -1,0 +1,27 @@
+{
+  "kind": "singleType",
+  "collectionName": "about_uss",
+  "info": {
+    "singularName": "about-us",
+    "pluralName": "about-uss",
+    "displayName": "About Us"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "body": {
+      "type": "richtext"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "kind": "singleType",
+  "collectionName": "homes",
+  "info": {
+    "singularName": "home",
+    "pluralName": "homes",
+    "displayName": "Home"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "heroTitle": {
+      "type": "string"
+    },
+    "heroSubtitle": {
+      "type": "text"
+    },
+    "heroImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "stats": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.stat-card"
+    },
+    "featuredReports": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::audit-report.audit-report"
+    },
+    "featuredNews": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::news.news"
+    }
+  }
+}

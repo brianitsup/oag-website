@@ -1,0 +1,53 @@
+{
+  "kind": "collectionType",
+  "collectionName": "audit_reports",
+  "info": {
+    "singularName": "audit-report",
+    "pluralName": "audit-reports",
+    "displayName": "Audit Report"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "reportDate": {
+      "type": "date"
+    },
+    "reportType": {
+      "type": "enumeration",
+      "enum": [
+        "Financial",
+        "Performance",
+        "Compliance",
+        "IT"
+      ]
+    },
+    "summary": {
+      "type": "text"
+    },
+    "fullReport": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "coverImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "publishedAt": {
+      "type": "datetime"
+    }
+  }
+}

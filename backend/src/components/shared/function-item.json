@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_shared_function_items",
+  "info": {
+    "displayName": "FunctionItem",
+    "icon": "list"
+  },
+  "options": {},
+  "attributes": {
+    "icon": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "kind": "singleType",
+  "collectionName": "contact_settings",
+  "info": {
+    "singularName": "contact-setting",
+    "pluralName": "contact-settings",
+    "displayName": "Contact Setting"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "address": {
+      "type": "text"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "googleMapsEmbedUrl": {
+      "type": "text"
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}
