@@ -83,35 +83,51 @@ export async function getHomeData(): Promise<HomeType | null> {
 }
 
 export async function getAllAuditReports(params = {}): Promise<StrapiCollectionResponse<AuditReport>> {
-  return fetchAPI<StrapiCollectionResponse<AuditReport>>('/audit-reports', {
-    populate: '*',
-    sort: 'reportDate:desc',
-    ...params
-  });
+  try {
+    return await fetchAPI<StrapiCollectionResponse<AuditReport>>('/audit-reports', {
+      populate: '*',
+      sort: 'reportDate:desc',
+      ...params
+    });
+  } catch (error) {
+    return { data: [], meta: { pagination: { page: 1, pageSize: 10, pageCount: 0, total: 0 } } };
+  }
 }
 
 export async function getAuditReportBySlug(slug: string): Promise<AuditReport | null> {
-  const res = await fetchAPI<StrapiCollectionResponse<AuditReport>>('/audit-reports', {
-    filters: { slug: { $eq: slug } },
-    populate: '*'
-  });
-  return res.data?.[0] || null;
+  try {
+    const res = await fetchAPI<StrapiCollectionResponse<AuditReport>>('/audit-reports', {
+      filters: { slug: { $eq: slug } },
+      populate: '*'
+    });
+    return res.data?.[0] || null;
+  } catch (error) {
+    return null;
+  }
 }
 
 export async function getAllNews(params = {}): Promise<StrapiCollectionResponse<News>> {
-  return fetchAPI<StrapiCollectionResponse<News>>('/newss', {
-    populate: '*',
-    sort: 'date:desc',
-    ...params
-  });
+  try {
+    return await fetchAPI<StrapiCollectionResponse<News>>('/newss', {
+      populate: '*',
+      sort: 'date:desc',
+      ...params
+    });
+  } catch (error) {
+    return { data: [], meta: { pagination: { page: 1, pageSize: 10, pageCount: 0, total: 0 } } };
+  }
 }
 
 export async function getNewsBySlug(slug: string): Promise<News | null> {
-  const res = await fetchAPI<StrapiCollectionResponse<News>>('/newss', {
-    filters: { slug: { $eq: slug } },
-    populate: '*'
-  });
-  return res.data?.[0] || null;
+  try {
+    const res = await fetchAPI<StrapiCollectionResponse<News>>('/newss', {
+      filters: { slug: { $eq: slug } },
+      populate: '*'
+    });
+    return res.data?.[0] || null;
+  } catch (error) {
+    return null;
+  }
 }
 
 export async function getAboutUsData(): Promise<AboutUsType | null> {
@@ -130,9 +146,17 @@ export async function getContactSettings(): Promise<ContactSettingType | null> {
 }
 
 export async function getResources(params = {}): Promise<StrapiCollectionResponse<Resource>> {
-  return fetchAPI<StrapiCollectionResponse<Resource>>('/resources', { populate: '*', ...params });
+  try {
+    return await fetchAPI<StrapiCollectionResponse<Resource>>('/resources', { populate: '*', ...params });
+  } catch (error) {
+    return { data: [], meta: { pagination: { page: 1, pageSize: 10, pageCount: 0, total: 0 } } };
+  }
 }
 
 export async function getOpportunities(params = {}): Promise<StrapiCollectionResponse<Opportunity>> {
-  return fetchAPI<StrapiCollectionResponse<Opportunity>>('/opportunitys', { populate: '*', sort: 'deadline:desc', ...params });
+  try {
+    return await fetchAPI<StrapiCollectionResponse<Opportunity>>('/opportunitys', { populate: '*', sort: 'deadline:desc', ...params });
+  } catch (error) {
+    return { data: [], meta: { pagination: { page: 1, pageSize: 10, pageCount: 0, total: 0 } } };
+  }
 }
