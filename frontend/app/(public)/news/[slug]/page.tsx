@@ -8,11 +8,19 @@ export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
-  const article = await getNewsBySlug(resolvedParams.slug);
-  return {
-    title: article?.title || "News Article",
-    description: article?.excerpt || "Read this news article from the OAG.",
-  };
+
+  try {
+    const article = await getNewsBySlug(resolvedParams.slug);
+    return {
+      title: article?.title || "News Article",
+      description: article?.excerpt || "Read this news article from the OAG.",
+    };
+  } catch {
+    return {
+      title: "News Article",
+      description: "Read this news article from the OAG.",
+    };
+  }
 }
 
 export default async function NewsDetailPage({
@@ -21,7 +29,14 @@ export default async function NewsDetailPage({
   params: Promise<{ slug: string }>
 }) {
   const resolvedParams = await params;
-  const article = await getNewsBySlug(resolvedParams.slug);
+
+  let article;
+  try {
+    article = await getNewsBySlug(resolvedParams.slug);
+  } catch (error) {
+    console.error('Error fetching news article:', error);
+    return <ErrorState message="This article is temporarily unavailable. Please try again shortly." />;
+  }
 
   if (!article) {
     return <ErrorState title="Article Not Found" message="The news article you are looking for does not exist." />;
@@ -65,9 +80,19 @@ export default async function NewsDetailPage({
       <div className="prose prose-blue prose-lg max-w-none text-muted-foreground leading-relaxed">
         {article.content ? (
           Array.isArray(article.content) ? (
-            article.content.map((block: any, i: number) => {
-              if (block.type === 'paragraph') {
-                return <p key={i} className="mb-6">{block.children?.map((c: any) => c.text).join('')}</p>;
+            article.content.map((block: unknown, i: number) => {
+              if (
+                typeof block === 'object' &&
+                block !== null &&
+                'type' in block &&
+                (block as { type?: string }).type === 'paragraph'
+              ) {
+                const children =
+                  'children' in block && Array.isArray((block as { children?: unknown[] }).children)
+                    ? (block as { children: Array<{ text?: string }> }).children
+                    : [];
+
+                return <p key={i} className="mb-6">{children.map((c) => c.text || '').join('')}</p>;
               }
               // Basic handling for other blocks could go here
               return null;

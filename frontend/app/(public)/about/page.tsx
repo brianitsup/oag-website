@@ -389,7 +389,13 @@ const sectionMap: Record<string, (content: string, allSections: ReturnType<typeo
 // ── Page component ───────────────────────────────────────
 
 export default async function AboutPage() {
-  const aboutData = await getAboutUsData();
+  let aboutData;
+  try {
+    aboutData = await getAboutUsData();
+  } catch (error) {
+    console.error('Error fetching About Us data:', error);
+    return <ErrorState message="Content for the About Us page is currently unavailable." />;
+  }
 
   if (!aboutData) {
     return <ErrorState message="Content for the About Us page is currently unavailable." />;

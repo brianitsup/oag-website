@@ -30,7 +30,14 @@ const iconMap: Record<string, React.ReactNode> = {
 };
 
 export default async function FunctionsPage() {
-  const functionsData = await getFunctionsData();
+  let functionsData;
+
+  try {
+    functionsData = await getFunctionsData();
+  } catch (error) {
+    console.error('Error fetching Functions page data:', error);
+    return <ErrorState message="Content for the Functions page is currently unavailable." />;
+  }
 
   if (!functionsData) {
     return <ErrorState message="Content for the Functions page is currently unavailable." />;

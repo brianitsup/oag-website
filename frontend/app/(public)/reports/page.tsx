@@ -2,6 +2,7 @@ import { getAllAuditReports } from "@/lib/strapi";
 import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { Metadata } from "next";
+import { ErrorState } from "@/components/ui/ErrorState";
 
 export const metadata: Metadata = {
   title: "Audit Reports",
@@ -20,7 +21,7 @@ export default async function ReportsPage({
   const type = typeof resolvedParams.type === 'string' ? resolvedParams.type : '';
 
   // Build Strapi filters
-  const filters: any = {};
+  const filters: Record<string, unknown> = {};
   if (q) {
     filters.title = { $containsi: q };
   }
@@ -28,7 +29,13 @@ export default async function ReportsPage({
     filters.reportType = { $eq: type };
   }
 
-  const reports = await getAllAuditReports({ filters });
+  let reports;
+  try {
+    reports = await getAllAuditReports({ filters });
+  } catch (error) {
+    console.error('Error fetching reports list:', error);
+    return <ErrorState message="Audit reports are temporarily unavailable. Please try again shortly." />;
+  }
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-6xl">

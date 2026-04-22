@@ -3,6 +3,7 @@ import { getAllNews, getStrapiURL } from "@/lib/strapi";
 import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { Metadata } from "next";
+import { ErrorState } from "@/components/ui/ErrorState";
 
 export const metadata: Metadata = {
   title: "News & Updates",
@@ -19,12 +20,18 @@ export default async function NewsPage({
   const resolvedParams = await searchParams;
   const q = typeof resolvedParams.q === 'string' ? resolvedParams.q : '';
 
-  const filters: any = {};
+  const filters: Record<string, unknown> = {};
   if (q) {
     filters.title = { $containsi: q };
   }
 
-  const news = await getAllNews({ filters });
+  let news;
+  try {
+    news = await getAllNews({ filters });
+  } catch (error) {
+    console.error('Error fetching news list:', error);
+    return <ErrorState message="News content is temporarily unavailable. Please try again shortly." />;
+  }
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-6xl">

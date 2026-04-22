@@ -9,11 +9,19 @@ export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
-  const report = await getAuditReportBySlug(resolvedParams.slug);
-  return {
-    title: report?.title || "Audit Report",
-    description: report?.summary || "Read this audit report from the OAG.",
-  };
+
+  try {
+    const report = await getAuditReportBySlug(resolvedParams.slug);
+    return {
+      title: report?.title || "Audit Report",
+      description: report?.summary || "Read this audit report from the OAG.",
+    };
+  } catch {
+    return {
+      title: "Audit Report",
+      description: "Read this audit report from the OAG.",
+    };
+  }
 }
 
 export default async function ReportDetailPage({
@@ -22,7 +30,14 @@ export default async function ReportDetailPage({
   params: Promise<{ slug: string }>
 }) {
   const resolvedParams = await params;
-  const report = await getAuditReportBySlug(resolvedParams.slug);
+
+  let report;
+  try {
+    report = await getAuditReportBySlug(resolvedParams.slug);
+  } catch (error) {
+    console.error('Error fetching report detail:', error);
+    return <ErrorState message="This report is temporarily unavailable. Please try again shortly." />;
+  }
 
   if (!report) {
     return <ErrorState title="Report Not Found" message="The report you are looking for does not exist or has been removed." />;

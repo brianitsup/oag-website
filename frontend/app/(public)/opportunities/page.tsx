@@ -1,6 +1,7 @@
 import { getOpportunities, getStrapiURL } from "@/lib/strapi";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Metadata } from "next";
+import { ErrorState } from "@/components/ui/ErrorState";
 
 export const metadata: Metadata = {
   title: "Opportunities",
@@ -10,7 +11,14 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function OpportunitiesPage() {
-  const opps = await getOpportunities();
+  let opps;
+
+  try {
+    opps = await getOpportunities();
+  } catch (error) {
+    console.error('Error fetching opportunities:', error);
+    return <ErrorState message="Opportunities are temporarily unavailable. Please try again shortly." />;
+  }
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-5xl">

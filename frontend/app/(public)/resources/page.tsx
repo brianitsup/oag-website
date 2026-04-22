@@ -1,6 +1,7 @@
 import { getResources, getStrapiURL } from "@/lib/strapi";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Metadata } from "next";
+import { ErrorState } from "@/components/ui/ErrorState";
 
 export const metadata: Metadata = {
   title: "Resources & Guidelines",
@@ -10,7 +11,14 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function ResourcesPage() {
-  const resources = await getResources();
+  let resources;
+
+  try {
+    resources = await getResources();
+  } catch (error) {
+    console.error('Error fetching resources:', error);
+    return <ErrorState message="Resources are temporarily unavailable. Please try again shortly." />;
+  }
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-5xl">
