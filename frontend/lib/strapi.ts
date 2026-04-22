@@ -114,7 +114,7 @@ export async function fetchAPI<T>(
     } catch (error: unknown) {
       lastError = error;
 
-      const isAbort = error?.name === 'AbortError';
+      const isAbort = error instanceof Error && error.name === 'AbortError';
       const isNetworkError = error instanceof TypeError;
       const canRetry = attempt < DEFAULT_FETCH_RETRIES && (isAbort || isNetworkError);
 
